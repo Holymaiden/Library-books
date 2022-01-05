@@ -21,7 +21,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             <a href=index.html>Home</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="#">Pages</a>
+                            <a href="#">Admin</a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">Admins</li>
                     </ol>

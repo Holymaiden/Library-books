@@ -166,7 +166,7 @@
                                 <div class="navigation-menu-body">
                                         <ul>
                                                 <li>
-                                                        <a class="active" href=index.php>
+                                                        <a <?php if ($title == "Home | Perpustakaan Hakim") echo "class='active'" ?> href=index.php>
                                                                 <span class="nav-link-icon">
                                                                         <i data-feather="pie-chart"></i>
                                                                 </span>
@@ -174,7 +174,7 @@
                                                         </a>
                                                 </li>
                                                 <li>
-                                                        <a href="books.php">
+                                                        <a <?php if ($title == "Books | Perpustakaan Hakim") echo "class='active'" ?> href="books.php">
                                                                 <span class="nav-link-icon">
                                                                         <i data-feather="shopping-cart"></i>
                                                                 </span>
@@ -393,7 +393,7 @@
                                                 <?php if (isset($_SESSION['l']))
                                                         if ($_SESSION['l'] == 1) { ?>
                                                         <li>
-                                                                <a href="#">
+                                                                <a <?php if ($title == "Admin | Perpustakaan Hakim" || $title == "User | Perpustakaan Hakim" || $title == "Book Admin | Perpustakaan Hakim") echo "class='active'" ?> href="#">
                                                                         <span class="nav-link-icon">
                                                                                 <i data-feather="copy"></i>
                                                                         </span>
@@ -405,6 +405,9 @@
                                                                         </li>
                                                                         <li>
                                                                                 <a href="users.php">Users</a>
+                                                                        </li>
+                                                                        <li>
+                                                                                <a href="a-book.php">Books</a>
                                                                         </li>
                                                                 </ul>
                                                         </li>

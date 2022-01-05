@@ -86,8 +86,8 @@ function show_user()
         $rowsTotal = mysqli_num_rows($l);
 
         $datas = [];
+        $i = 1;
         while ($v = mysqli_fetch_assoc($h)) {
-                $i = 1;
                 $datas[] = [
                         'id' => $i++,
                         'username' => $v['username'],
@@ -177,8 +177,9 @@ function show_admin()
         $rowsTotal = mysqli_num_rows($l);
 
         $datas = [];
+        $i = 1;
+
         while ($v = mysqli_fetch_assoc($h)) {
-                $i = 1;
                 $datas[] = [
                         'id' => $i++,
                         'username' => $v['username'],
