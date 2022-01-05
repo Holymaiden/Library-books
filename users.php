@@ -63,7 +63,6 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
     <!-- ./ Content -->
 
     <!-- Modal Baru -->
-
     <div class="modal fade" id="baruModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -92,7 +91,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
                                 <label for="validationCustom03">Password</label>
-                                <input name="password" type="password" class="form-control" id="validationCustom03" placeholder="City" required>
+                                <input name="password" type="password" class="form-control" id="validationCustom03" placeholder="Paasword" required>
                                 <div class="invalid-feedback">
                                 </div>
                             </div>
@@ -117,6 +116,62 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
         </div>
     </div>
     <!-- ./ Modal Baru -->
+
+    <!-- Modal Update -->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalTitle">User Update</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="ti-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="formUpdate" action="" method="POST" class="needs-validation" novalidate>
+                        <div class="form-row">
+                            <input type="hidden" name="id" id="id">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustomUsername">Username</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                    </div>
+                                    <input name="username" type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+                                    <div class="invalid-feedback">
+                                        Please choose a username.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom03">Password</label>
+                                <input name="password" type="password" class="form-control" id="validationCustom03" placeholder="Password" required>
+                                <div class="invalid-feedback">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom04">Role</label>
+                                <select class="select2-example form-control" id="validationCustom04" required>
+                                    <option value="2">User</option>
+                                </select>
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                    </button>
+                    <button type="submit" value="Buat" class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ./ Modal Update -->
 
     <?php require_once("./templates/footer.php") ?>
 
@@ -163,6 +218,28 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
                         swal("Good job!", "User Berhasil Ditambahkan!", "success");
+                        $('#user-list').DataTable().ajax.reload();
+                    } else if (jsonData.success == "2") {
+                        swal("Sorry!", "Username Sudah Ada!", "warning");
+                    } else {
+                        swal("Sorry!", "User Gagal Ditambahkan", "error");
+                    }
+                });
+            });
+            $('#formUpdate').submit(function(e) {
+                const button = $(e.relatedTarget);
+                var id = button.data("id");
+                console.log(id);
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: 'users_update.php',
+                    data: $(this).serialize(),
+                }).then(function(response) {
+                    console.log(response);
+                    var jsonData = JSON.parse(response);
+                    if (jsonData.success == "1") {
+                        swal("Good job!", "User Berhasil Diubah!", "success");
                         $('#user-list').DataTable().ajax.reload();
                     } else if (jsonData.success == "2") {
                         swal("Sorry!", "Username Sudah Ada!", "warning");

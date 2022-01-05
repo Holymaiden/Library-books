@@ -98,8 +98,7 @@ function show_user()
                                 <i class="ti-more-alt"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a href="#" class="dropdown-item">View Profile</a>
-                                <a href="#" class="dropdown-item">Edit</a>
+                                <button class="dropdown-item" data-toggle="modal" data-target="#updateModal" data-id="' . $v['id'] . '">Edit</button>
                                 <a href="#" class="dropdown-item text-danger">Delete</a>
                             </div>
                         </div>
@@ -124,6 +123,21 @@ function create_user($data)
         $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "'");
         if ($sql == 0) {
                 $data = mysqli_query($connect, "INSERT INTO `users` (`username`, `pass`, `role`) VALUES ('" . $username . "','" . $pass . "', '2')");
+                return json_encode(array('success' => 1));
+        } else {
+                return json_encode(array('success' => 2));
+        }
+}
+
+function update_user($data)
+{
+        global $connect;
+        $username = $data['username'];
+        $pass = $data['password'];
+
+        $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "'");
+        if ($sql == 0) {
+                $data = mysqli_query($connect, "UPDATE `users` SET `username`='" . $username . "', `pass`='" . $pass . "', `role`='2' WHERE id='" . $_POST['id'] . "'");
                 return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));
