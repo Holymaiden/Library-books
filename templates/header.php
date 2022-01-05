@@ -385,22 +385,25 @@
                                                                 </li>
                                                         </ul>
                                                 </li>
-                                                <li>
-                                                        <a href="#">
-                                                                <span class="nav-link-icon">
-                                                                        <i data-feather="copy"></i>
-                                                                </span>
-                                                                <span>Admin</span>
-                                                        </a>
-                                                        <ul>
-                                                                <li>
-                                                                        <a href="admins.php">Admins</a>
-                                                                </li>
-                                                                <li>
-                                                                        <a href="users.php">Users</a>
-                                                                </li>
-                                                        </ul>
-                                                </li>
+                                                <?php if (isset($_SESSION['l']))
+                                                        if ($_SESSION['l'] == 1) { ?>
+                                                        <li>
+                                                                <a href="#">
+                                                                        <span class="nav-link-icon">
+                                                                                <i data-feather="copy"></i>
+                                                                        </span>
+                                                                        <span>Admin</span>
+                                                                </a>
+                                                                <ul>
+                                                                        <li>
+                                                                                <a href="admins.php">Admins</a>
+                                                                        </li>
+                                                                        <li>
+                                                                                <a href="users.php">Users</a>
+                                                                        </li>
+                                                                </ul>
+                                                        </li>
+                                                <?php } ?>
                                         </ul>
                                 </div>
                         </div>

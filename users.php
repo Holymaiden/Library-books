@@ -1,4 +1,6 @@
-<?php $title = "User | Perpustakaan Hakim";
+<?php session_start();
+if (isset($_SESSION['l'])) if ($_SESSION['l'] != 1) header('Location: index.php');
+$title = "User | Perpustakaan Hakim";
 require_once("./templates/header.php");
 require_once("./conn.php");
 
