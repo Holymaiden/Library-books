@@ -69,8 +69,8 @@ function show_user()
         global $connect;
         $data = "SELECT * FROM `users` WHERE `role`='2' ";
         if (!empty($_POST["search"]["value"])) {
-                $data .= 'where(id LIKE "%' . $_POST["search"]["value"] . '%" ';
-                $data .= ' OR username LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'AND id LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'OR `role`="2" AND username LIKE "%' . $_POST["search"]["value"] . '%" ';
         }
         if (!empty($_POST["order"])) {
                 $data .= 'ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';
