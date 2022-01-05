@@ -91,7 +91,7 @@ function show_user()
                 $datas[] = [
                         'id' => $i++,
                         'username' => $v['username'],
-                        'role' => $v['role'],
+                        'role' => 'User',
                         'button' => '<td class="text-right">
                         <div class="dropdown">
                             <a href="#" data-toggle="dropdown" class="btn btn-floating" aria-haspopup="true" aria-expanded="false">
@@ -114,7 +114,7 @@ function show_user()
         echo json_encode($output);
 }
 
-function create_user($data)
+function create_user($data, $role)
 {
         global $connect;
         $username = $data['username'];
@@ -122,14 +122,14 @@ function create_user($data)
 
         $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "'");
         if ($sql == 0) {
-                $data = mysqli_query($connect, "INSERT INTO `users` (`username`, `pass`, `role`) VALUES ('" . $username . "','" . $pass . "', '2')");
+                $data = mysqli_query($connect, "INSERT INTO `users` (`username`, `pass`, `role`) VALUES ('" . $username . "','" . $pass . "', " . $role . ")");
                 return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));
         }
 }
 
-function update_user($data)
+function update_user($data, $role)
 {
         global $connect;
         $username = $data['username'];
@@ -137,7 +137,7 @@ function update_user($data)
 
         $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "'");
         if ($sql == 0) {
-                $data = mysqli_query($connect, "UPDATE `users` SET `username`='" . $username . "', `pass`='" . $pass . "', `role`='2' WHERE id='" . $data['id'] . "'");
+                $data = mysqli_query($connect, "UPDATE `users` SET `username`='" . $username . "', `pass`='" . $pass . "', `role`=" . $role . " WHERE id='" . $data['id'] . "'");
                 return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));
@@ -153,4 +153,54 @@ function delete_user($data)
         } else {
                 return json_encode(array('success' => 2));
         }
+}
+
+function show_admin()
+{
+        global $connect;
+        $data = "SELECT * FROM `users` WHERE `role`='1' ";
+        if (!empty($_POST["search"]["value"])) {
+                $data .= 'AND id LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'OR `role`="1" AND username LIKE "%' . $_POST["search"]["value"] . '%" ';
+        }
+        if (!empty($_POST["order"])) {
+                $data .= 'ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';
+        } else {
+                $data .= 'ORDER BY id DESC ';
+        }
+        if ($_POST["length"] != -1) {
+                $data .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+        $h = mysqli_query($connect, $data);
+        $rows = mysqli_num_rows($h);
+        $l = mysqli_query($connect, "SELECT * FROM `users` WHERE `role`='1'");
+        $rowsTotal = mysqli_num_rows($l);
+
+        $datas = [];
+        while ($v = mysqli_fetch_assoc($h)) {
+                $i = 1;
+                $datas[] = [
+                        'id' => $i++,
+                        'username' => $v['username'],
+                        'role' => 'Admin',
+                        'button' => '<td class="text-right">
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-floating" aria-haspopup="true" aria-expanded="false">
+                                <i class="ti-more-alt"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="javascript:void(0)" class="dropdown-item updateData" data-toggle="modal" data-id="' . $v['id'] . '" title="Update" data-target="#updateModal">Edit</a>
+                                <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $v['id'] . '" class="dropdown-item text-danger deleteData">Delete</a>
+                            </div>
+                        </div>
+                    </td>'
+                ];
+        }
+        $output = array(
+                "draw" => intval($_POST["draw"]),
+                "iTotalRecords" => $rows,
+                "iTotalDisplayRecords" => $rowsTotal,
+                "data" => $datas
+        );
+        echo json_encode($output);
 }
