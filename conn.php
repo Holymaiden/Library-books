@@ -98,8 +98,8 @@ function show_user()
                                 <i class="ti-more-alt"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <button class="dropdown-item" data-toggle="modal" data-target="#updateModal" data-id="' . $v['id'] . '">Edit</button>
-                                <a href="#" class="dropdown-item text-danger">Delete</a>
+                                <a href="javascript:void(0)" class="dropdown-item updateData" data-toggle="modal" data-id="' . $v['id'] . '" title="Update" data-target="#updateModal">Edit</a>
+                                <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $v['id'] . '" class="dropdown-item text-danger deleteData">Delete</a>
                             </div>
                         </div>
                     </td>'
@@ -137,7 +137,18 @@ function update_user($data)
 
         $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "'");
         if ($sql == 0) {
-                $data = mysqli_query($connect, "UPDATE `users` SET `username`='" . $username . "', `pass`='" . $pass . "', `role`='2' WHERE id='" . $_POST['id'] . "'");
+                $data = mysqli_query($connect, "UPDATE `users` SET `username`='" . $username . "', `pass`='" . $pass . "', `role`='2' WHERE id='" . $data['id'] . "'");
+                return json_encode(array('success' => 1));
+        } else {
+                return json_encode(array('success' => 2));
+        }
+}
+
+function delete_user($data)
+{
+        global $connect;
+        $data = mysqli_query($connect, "DELETE FROM `users` WHERE id=" . $data . "");
+        if ($data) {
                 return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));

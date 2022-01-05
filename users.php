@@ -130,7 +130,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                 <div class="modal-body">
                     <form id="formUpdate" action="" method="POST" class="needs-validation" novalidate>
                         <div class="form-row">
-                            <input type="hidden" name="id" id="id">
+                            <input type="hidden" name="id" id="formId">
                             <div class="col-md-12 mb-3">
                                 <label for="validationCustomUsername">Username</label>
                                 <div class="input-group">
@@ -177,6 +177,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
 
     <script type="text/javascript">
         $(document).ready(function() {
+            var ids;
             $('#user-list').DataTable({
                 "lengthChange": false,
                 "processing": true,
@@ -214,7 +215,6 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                     url: 'users_new.php',
                     data: $(this).serialize(),
                 }).then(function(response) {
-                    console.log(response);
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
                         swal("Good job!", "User Berhasil Ditambahkan!", "success");
@@ -226,17 +226,18 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                     }
                 });
             });
+
+            $('body').on('click', '.updateData', function() {
+                var id = $(this).data("id");
+                ids = id;
+            })
             $('#formUpdate').submit(function(e) {
-                const button = $(e.relatedTarget);
-                var id = button.data("id");
-                console.log(id);
                 e.preventDefault();
                 $.ajax({
                     type: "POST",
                     url: 'users_update.php',
-                    data: $(this).serialize(),
+                    data: $(this).serialize() + '&id=' + ids,
                 }).then(function(response) {
-                    console.log(response);
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
                         swal("Good job!", "User Berhasil Diubah!", "success");
@@ -245,6 +246,32 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                         swal("Sorry!", "Username Sudah Ada!", "warning");
                     } else {
                         swal("Sorry!", "User Gagal Ditambahkan", "error");
+                    }
+                });
+            });
+            $('body').on('click', '.deleteData', function() {
+                var id = $(this).data("id");
+                swal({
+                    title: "Are you sure to Delete?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                }).then(function(result) {
+                    if (result) {
+                        $.ajax({
+                            type: "POST",
+                            url: "users_delete.php",
+                            data: {
+                                id: id
+                            },
+                            success: function(data) {
+                                $('#user-list').DataTable().ajax.reload();
+                                toastr.success("Successful delete data!");
+                            },
+                            error: function(data) {
+                                toastr.error("Failed delete data!");
+                            }
+                        });
                     }
                 });
             });
