@@ -32,6 +32,15 @@
 <!-- Dashboard scripts -->
 <script src="assets/js/examples/pages/dashboard.js"></script>
 
+<!-- Sweet alert -->
+<script src="assets/js/examples/sweet-alert.js"></script>
+
+<!-- Prism -->
+<script src="vendors/prism/prism.js"></script>
+
+<!-- Javascript -->
+<script src="vendors/select2/js/select2.min.js"></script>
+
 <!-- App scripts -->
 <script src="assets/js/app.min.js"></script>
 </body>

@@ -22,6 +22,12 @@
         <!-- DataTable -->
         <link rel="stylesheet" href="vendors/dataTable/datatables.min.css" type="text/css">
 
+        <!-- Style -->
+        <link rel="stylesheet" href="vendors/select2/css/select2.min.css" type="text/css">
+
+        <!-- Prism -->
+        <link rel="stylesheet" href="vendors/prism/prism.css" type="text/css">
+
         <!-- App css -->
         <link rel="stylesheet" href="assets/css/app.min.css" type="text/css">
 
