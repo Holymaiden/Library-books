@@ -1,4 +1,5 @@
-<?php $title = "Setting | Perpustakaan Hakim";
+<?php session_start();
+$title = "Setting | Perpustakaan Hakim";
 require_once("./templates/header.php") ?>
 
 <!-- Content body -->

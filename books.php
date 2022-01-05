@@ -1,4 +1,5 @@
-<?php $title = "Books | Perpustakaan Hakim";
+<?php session_start();
+$title = "Books | Perpustakaan Hakim";
 require_once("./templates/header.php");
 require_once("./conn.php");
 $data = get_data("SELECT * FROM `books`");

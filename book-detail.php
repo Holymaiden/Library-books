@@ -1,4 +1,5 @@
-<?php $title = "" . $_GET['v'] . " | Perpustakaan Hakim";
+<?php session_start();
+$title = "" . $_GET['v'] . " | Perpustakaan Hakim";
 require_once("./templates/header.php");
 require_once("./conn.php");
 $data = query("SELECT * FROM `books` WHERE slug='" . $_GET['v'] . "'");
