@@ -52,12 +52,15 @@ function register($data)
         global $connect;
         $username = $data['username'];
         $pass = $data['password'];
+        $email = $data['password'];
 
-        $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "'");
+        $sql = get_rows("SELECT * FROM users WHERE username='" . $username . "' OR email='" . $email . "'");
         if ($sql == 0) {
                 session_start();
-                $data = mysqli_query($connect, "INSERT INTO `users` (`username`, `pass`, `role`) VALUES ('" . $username . "','" . $pass . "', '2')");
+                $data = mysqli_query($connect, "INSERT INTO `users` (`username`, `pass`, `email`, `role`) VALUES ('" . $username . "','" . $pass . "', '" . $email . "', '2')");
+                $v = query("SELECT * FROM users WHERE username='" . $username . "' OR email='" . $email . "'");
                 $_SESSION['username'] = $username;
+                $_SESSION['i'] = $v['id'];
                 $_SESSION['l'] = 2;
                 return json_encode(array('success' => 1));
         } else {

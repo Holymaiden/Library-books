@@ -11,7 +11,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['l'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login - Library Hakim</title>
+    <title>Login - Library</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="assets/media/image/favicon.png" />
@@ -60,7 +60,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['l'])) {
             <button type="submit" value="Login" class="btn btn-primary btn-block">Sign in</button>
             <hr>
             <p class="text-muted">Don't have an account?</p>
-            <a href="register.html" class="btn btn-outline-light btn-sm">Register now!</a>
+            <a href="register.php" class="btn btn-outline-light btn-sm">Register now!</a>
         </form>
         <!-- ./ form -->
 

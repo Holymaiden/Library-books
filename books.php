@@ -1,5 +1,5 @@
 <?php session_start();
-$title = "Books | Perpustakaan Hakim";
+$title = "Books | Perpustakaan";
 require_once("./templates/header.php");
 require_once("./conn.php");
 $data = get_data("SELECT * FROM `books`");

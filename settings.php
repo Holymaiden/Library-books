@@ -1,5 +1,5 @@
 <?php session_start();
-$title = "Setting | Perpustakaan Hakim";
+$title = "Setting | Perpustakaan";
 require_once("./templates/header.php");
 require_once("./conn.php");
 

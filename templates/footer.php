@@ -44,7 +44,7 @@
 <!-- App scripts -->
 <script src="assets/js/app.min.js"></script>
 
-<?php if ($title == "Chapter | Perpustakaan Hakim") { ?>
+<?php if ($title == "Chapter | Perpustakaan") { ?>
         <script type='text/javascript' src='https://cdn.jsdelivr.net/npm/froala-editor@4.0.8/js/froala_editor.pkgd.min.js'></script>
 <?php } ?>
 

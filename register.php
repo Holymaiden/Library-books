@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Gogi - Admin and Dashboard Template</title>
+    <title>Login - Library</title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="assets/media/image/favicon.png" />
@@ -42,12 +42,15 @@
                 <input name="username" type="text" class="form-control" placeholder="Username" required autofocus>
             </div>
             <div class="form-group">
+                <input name="email" type="email" class="form-control" placeholder="Email" required>
+            </div>
+            <div class="form-group">
                 <input name="password" type="password" class="form-control" placeholder="Password" required>
             </div>
             <button type="submit" value="Register" class="btn btn-primary btn-block">Register</button>
             <hr>
             <p class="text-muted">Already have an account?</p>
-            <a href="login.html" class="btn btn-outline-light btn-sm">Sign in!</a>
+            <a href="login.php" class="btn btn-outline-light btn-sm">Sign in!</a>
         </form>
         <!-- ./ form -->
 

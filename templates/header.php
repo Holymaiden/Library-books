@@ -31,7 +31,7 @@
         <!-- App css -->
         <link rel="stylesheet" href="assets/css/app.min.css" type="text/css">
 
-        <?php if ($title == "Chapter | Perpustakaan Hakim") { ?>
+        <?php if ($title == "Chapter | Perpustakaan") { ?>
                 <link href='https://cdn.jsdelivr.net/npm/froala-editor@4.0.8/css/froala_editor.pkgd.min.css' rel='stylesheet' type='text/css' />
         <?php } ?>
 
@@ -166,7 +166,7 @@
                                                 <?php if (isset($_SESSION['l']))
                                                         if ($_SESSION['l'] == 1) { ?>
                                                         <li>
-                                                                <a <?php if ($title == "Home | Perpustakaan Hakim") echo "class='active'" ?> href=index.php>
+                                                                <a <?php if ($title == "Home | Perpustakaan") echo "class='active'" ?> href=index.php>
                                                                         <span class="nav-link-icon">
                                                                                 <i data-feather="pie-chart"></i>
                                                                         </span>
@@ -175,7 +175,7 @@
                                                         </li>
                                                 <?php } ?>
                                                 <li>
-                                                        <a <?php if ($title == "Books | Perpustakaan Hakim") echo "class='active'" ?> href="books.php">
+                                                        <a <?php if ($title == "Books | Perpustakaan") echo "class='active'" ?> href="books.php">
                                                                 <span class="nav-link-icon">
                                                                         <i data-feather="shopping-cart"></i>
                                                                 </span>
@@ -185,7 +185,7 @@
                                                 <?php if (isset($_SESSION['l']))
                                                         if ($_SESSION['l'] == 1) { ?>
                                                         <li>
-                                                                <a <?php if ($title == "Admin | Perpustakaan Hakim" || $title == "User | Perpustakaan Hakim" || $title == "Book Admin | Perpustakaan Hakim" || $title == "Chapter | Perpustakaan Hakim") echo "class='active'" ?> href="#">
+                                                                <a <?php if ($title == "Admin | Perpustakaan" || $title == "User | Perpustakaan" || $title == "Book Admin | Perpustakaan" || $title == "Chapter | Perpustakaan") echo "class='active'" ?> href="#">
                                                                         <span class="nav-link-icon">
                                                                                 <i data-feather="copy"></i>
                                                                         </span>

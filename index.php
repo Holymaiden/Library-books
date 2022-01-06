@@ -3,7 +3,7 @@ session_start();
 if (isset($_SESSION['l']))
     if ($_SESSION['l'] != 1)
         header("Location:books.php");
-$title = "Home | Perpustakaan Hakim";
+$title = "Home | Perpustakaan";
 require_once("./templates/header.php");
 require("./conn.php");
 $user = get_rows("SELECT * FROM `users` WHERE `role`='1'");
