@@ -163,14 +163,17 @@
                                 </div>
                                 <div class="navigation-menu-body">
                                         <ul>
-                                                <li>
-                                                        <a <?php if ($title == "Home | Perpustakaan Hakim") echo "class='active'" ?> href=index.php>
-                                                                <span class="nav-link-icon">
-                                                                        <i data-feather="pie-chart"></i>
-                                                                </span>
-                                                                <span>Dashboard</span>
-                                                        </a>
-                                                </li>
+                                                <?php if (isset($_SESSION['l']))
+                                                        if ($_SESSION['l'] == 1) { ?>
+                                                        <li>
+                                                                <a <?php if ($title == "Home | Perpustakaan Hakim") echo "class='active'" ?> href=index.php>
+                                                                        <span class="nav-link-icon">
+                                                                                <i data-feather="pie-chart"></i>
+                                                                        </span>
+                                                                        <span>Dashboard</span>
+                                                                </a>
+                                                        </li>
+                                                <?php } ?>
                                                 <li>
                                                         <a <?php if ($title == "Books | Perpustakaan Hakim") echo "class='active'" ?> href="books.php">
                                                                 <span class="nav-link-icon">
