@@ -131,7 +131,7 @@
                                                                                         </figure>
                                                                                         <h5 class="text-center"><?= $_SESSION['username'] ?></h5>
                                                                                         <div class="mb-3 small text-center text-muted">@<?= $_SESSION['username'] ?></div>
-                                                                                        <a href="#" class="btn btn-outline-light btn-rounded">Manage Your Account</a>
+                                                                                        <a href="settings.php" class="btn btn-outline-light btn-rounded">Manage Your Account</a>
                                                                                 </div>
                                                                                 <div class="list-group">
                                                                                         <a href="settings.php" class="list-group-item">View Profile</a>
