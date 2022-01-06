@@ -120,12 +120,12 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
     </div>
     <!-- ./ Modal Baru -->
 
-    <!-- Modal Baru -->
+    <!-- Modal Update -->
     <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="baruModalTitle">Buku Baru</h5>
+                    <h5 class="modal-title" id="baruModalTitle">Buku Update</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="ti-close"></i>
                     </button>
@@ -178,7 +178,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
             </div>
         </div>
     </div>
-    <!-- ./ Modal Baru -->
+    <!-- ./ Modal Update -->
 
     <?php require_once("./templates/footer.php") ?>
 

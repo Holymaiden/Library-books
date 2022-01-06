@@ -261,7 +261,7 @@ function show_Books()
 
 function byId($data, $table)
 {
-        $data = query("SELECT * FROM `books` WHERE `id`=" . $data['id'] . "");
+        $data = query("SELECT * FROM $table WHERE `id`=" . $data['id'] . "");
         echo json_encode($data);
 }
 

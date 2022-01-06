@@ -132,12 +132,12 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                         <div class="form-row">
                             <input type="hidden" name="id" id="formId">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustomUsername">Username</label>
+                                <label for="usernameUpdate">Username</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroupPrepend">@</span>
                                     </div>
-                                    <input name="username" type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+                                    <input name="username" type="text" class="form-control" id="usernameUpdate" placeholder="Username" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback">
                                         Please choose a username.
                                     </div>
@@ -230,7 +230,24 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
             $('body').on('click', '.updateData', function() {
                 var id = $(this).data("id");
                 ids = id;
+                $.ajax({
+                    url: "users_get.php",
+                    type: "POST",
+                    data: {
+                        action: 'byOne',
+                        id: ids
+                    },
+                    dataType: "JSON",
+                    success: function(data) {
+                        $('#usernameUpdate').val(data.username);
+                    },
+                    error: function() {
+                        swal("Sorry!", "User Gagal ditampilkan", "error");
+                    }
+                });
+
             })
+
             $('#formUpdate').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
