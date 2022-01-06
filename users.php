@@ -284,10 +284,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                             },
                             success: function(data) {
                                 $('#user-list').DataTable().ajax.reload();
-                                toastr.success("Successful delete data!");
+                                swal("Good job!", "User Berhasil dihapus!", "success");
                             },
                             error: function(data) {
-                                toastr.error("Failed delete data!");
+                                swal("Sorry!", "User Gagal dihapus", "error");
                             }
                         });
                     }
