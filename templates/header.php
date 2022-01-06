@@ -393,7 +393,7 @@
                                                 <?php if (isset($_SESSION['l']))
                                                         if ($_SESSION['l'] == 1) { ?>
                                                         <li>
-                                                                <a <?php if ($title == "Admin | Perpustakaan Hakim" || $title == "User | Perpustakaan Hakim" || $title == "Book Admin | Perpustakaan Hakim") echo "class='active'" ?> href="#">
+                                                                <a <?php if ($title == "Admin | Perpustakaan Hakim" || $title == "User | Perpustakaan Hakim" || $title == "Book Admin | Perpustakaan Hakim" || $title == "Chapter | Perpustakaan Hakim") echo "class='active'" ?> href="#">
                                                                         <span class="nav-link-icon">
                                                                                 <i data-feather="copy"></i>
                                                                         </span>
@@ -408,6 +408,9 @@
                                                                         </li>
                                                                         <li>
                                                                                 <a href="a-book.php">Books</a>
+                                                                        </li>
+                                                                        <li>
+                                                                                <a href="chapter.php">Chapters</a>
                                                                         </li>
                                                                 </ul>
                                                         </li>
