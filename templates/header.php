@@ -119,16 +119,10 @@
                                                         if (isset($_SESSION['username'])) { ?>
                                                                 <li class="nav-item dropdown">
                                                                         <a href="#" class="nav-link dropdown-toggle" title="User menu" data-toggle="dropdown">
-                                                                                <figure class="avatar avatar-sm">
-                                                                                        <img src="assets/media/image/user/man_avatar3.jpg" class="rounded-circle" alt="avatar">
-                                                                                </figure>
                                                                                 <span class="ml-2 d-sm-inline d-none"><?= $_SESSION['username'] ?></span>
                                                                         </a>
                                                                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-big">
                                                                                 <div class="text-center py-4">
-                                                                                        <figure class="avatar avatar-lg mb-3 border-0">
-                                                                                                <img src="assets/media/image/user/man_avatar3.jpg" class="rounded-circle" alt="image">
-                                                                                        </figure>
                                                                                         <h5 class="text-center"><?= $_SESSION['username'] ?></h5>
                                                                                         <div class="mb-3 small text-center text-muted">@<?= $_SESSION['username'] ?></div>
                                                                                         <a href="settings.php" class="btn btn-outline-light btn-rounded">Manage Your Account</a>

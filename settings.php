@@ -44,18 +44,6 @@ $user = query("SELECT * FROM `users` WHERE id=" . $_SESSION['i'] . "");
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-title">Your Profile</h6>
-                                        <div class="d-flex mb-3">
-                                            <figure class="mr-3">
-                                                <img width="100" class="rounded-pill" src="assets/media/image/user/women_avatar1.jpg" alt="...">
-                                            </figure>
-                                            <div>
-                                                <p><?= $user['username'] ?></p>
-                                                <button class="btn btn-outline-light mr-2">Change Avatar</button>
-                                                <button class="btn btn-outline-danger">Remove Avatar</button>
-                                                <p class="small text-muted mt-3">For best results, use an image at least
-                                                    256px by 256px in either .jpg or .png format</p>
-                                            </div>
-                                        </div>
                                         <form id="user_profile" method="POST">
                                             <div class="row">
                                                 <input name="id" type="text" hidden class="form-control" value="<?= $user['id'] ?>">
