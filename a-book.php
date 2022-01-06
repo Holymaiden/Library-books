@@ -281,7 +281,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     } else if (jsonData.success == "2") {
                         swal("Sorry!", "Buku Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "Book Gagal Ditambahkan", "error");
+                        swal("Sorry!", "Book Gagal diubah", "error");
                     }
                 });
             });
@@ -303,10 +303,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             },
                             success: function(data) {
                                 $('#book-list').DataTable().ajax.reload();
-                                swal("Good job!", "Book Berhasil Ditambahkan!", "success");
+                                swal("Good job!", "Book Berhasil dihapus!", "success");
                             },
                             error: function(data) {
-                                swal("Sorry!", "Book Gagal Ditambahkan", "error");
+                                swal("Sorry!", "Book Gagal dihapus", "error");
                             }
                         });
                     }

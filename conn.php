@@ -211,7 +211,7 @@ function show_Books()
         global $connect;
         $data = "SELECT `books`.*, `categorys`.`name` FROM `books` LEFT JOIN `categorys` ON `categorys`.`id`=`books`.`category_id`  ";
         if (!empty($_POST["search"]["value"])) {
-                $data .= 'OR `books`.`title` LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'WHERE `books`.`title` LIKE "%' . $_POST["search"]["value"] . '%" ';
                 $data .= 'OR `books`.`description` LIKE "%' . $_POST["search"]["value"] . '%" ';
                 $data .= 'OR `categorys`.`name` LIKE "%' . $_POST["search"]["value"] . '%" ';
         }
@@ -312,6 +312,81 @@ function update_book($data, $file)
                 }
 
                 return json_encode(array('success' => 0));
+        } else {
+                return json_encode(array('success' => 2));
+        }
+}
+
+function show_Chapters()
+{
+        global $connect;
+        $data = "SELECT `books`.`title`, `content`.`id`,`content`.`page`, `content`.`content` FROM `books` RIGHT JOIN `content` ON `content`.`book_id`=`books`.`id`  ";
+        if (!empty($_POST["search"]["value"])) {
+                $data .= 'WHERE `books`.`title` LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'OR `content`.`content` LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'OR `content`.`page` LIKE "%' . $_POST["search"]["value"] . '%" ';
+        }
+        if (!empty($_POST["sear"])) {
+                $data .= 'WHERE `books`.`title` LIKE "%' . $_POST["sear"] . '%" ';
+                $data .= 'OR `content`.`content` LIKE "%' . $_POST["sear"] . '%" ';
+                $data .= 'OR `content`.`page` LIKE "%' . $_POST["sear"] . '%" ';
+        }
+
+        if (!empty($_POST["order"])) {
+                $data .= 'ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';
+        } else {
+                $data .= 'ORDER BY id DESC ';
+        }
+        if ($_POST["length"] != -1) {
+                $data .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+        $h = mysqli_query($connect, $data);
+        $rows = mysqli_num_rows($h);
+        $l = mysqli_query($connect, "SELECT `books`.`title`, `content`.`id`,`content`.`page`, `content`.`content` FROM `books` RIGHT JOIN `content` ON `content`.`book_id`=`books`.`id`");
+        $rowsTotal = mysqli_num_rows($l);
+
+        $datas = [];
+        $i = 1;
+        while ($v = mysqli_fetch_assoc($h)) {
+                $datas[] = [
+                        'id' => $i++,
+                        'title' => $v['title'],
+                        'page' => $v['page'],
+                        'content' => substr($v['content'], 0, 100),
+                        'button' => '<td class="text-right">
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-floating" aria-haspopup="true" aria-expanded="false">
+                                <i class="ti-more-alt"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="javascript:void(0)" class="dropdown-item updateData" data-toggle="modal" data-id="' . $v['id'] . '" title="Update" data-target="#updateModal">Edit</a>
+                                <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $v['id'] . '" class="dropdown-item text-danger deleteData">Delete</a>
+                            </div>
+                        </div>
+                    </td>'
+                ];
+        }
+
+        $output = array(
+                "draw" => intval($_POST["draw"]),
+                "iTotalRecords" => $rows,
+                "iTotalDisplayRecords" => $rowsTotal,
+                "data" => $datas
+        );
+        echo json_encode($output);
+}
+
+function create_Chapter($data)
+{
+        global $connect;
+        $book = $data['book'];
+        $content = $data['content'];
+
+
+        $sql = query("SELECT `page` FROM `content` WHERE `book_id`='" . $book . "' ORDER BY `id` DESC LIMIT 1");
+        if ($sql >= 0) {
+                $data = mysqli_query($connect, "INSERT INTO `content` (`book_id`, `page`, `content`) VALUES ('" . $book . "','" . ($sql['page'] ? $sql['page'] : 0) + 1 . "','" . $content . "')");
+                return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));
         }

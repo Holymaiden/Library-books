@@ -259,7 +259,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     } else if (jsonData.success == "2") {
                         swal("Sorry!", "Username Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "Admin Gagal Ditambahkan", "error");
+                        swal("Sorry!", "Admin Gagal diubah", "error");
                     }
                 });
             });
@@ -281,10 +281,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             },
                             success: function(data) {
                                 $('#admin-list').DataTable().ajax.reload();
-                                toastr.success("Successful delete data!");
+                                swal("Good job!", "Admin Berhasil dihapus!", "success");
                             },
                             error: function(data) {
-                                toastr.error("Failed delete data!");
+                                swal("Sorry!", "Admin Gagal dihapus", "error");
                             }
                         });
                     }
