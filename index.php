@@ -1,7 +1,12 @@
 <?php
 session_start();
 $title = "Home | Perpustakaan Hakim";
-require_once("./templates/header.php") ?>
+require_once("./templates/header.php");
+require("./conn.php");
+$user = get_rows("SELECT * FROM `users` WHERE `role`='1'");
+$admin = get_rows("SELECT * FROM `users` WHERE `role`='2'");
+$buku = get_rows("SELECT * FROM `books`");
+?>
 <!-- Content body -->
 <div class="content-body">
     <!-- Content -->
@@ -60,7 +65,7 @@ require_once("./templates/header.php") ?>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="font-weight-bold ml-1 font-size-30 ml-3">0.16%</div>
+                                    <div class="font-weight-bold ml-1 font-size-30 ml-3"><?= $buku ?></div>
                                 </div>
                                 <p class="mb-0"><a href="#" class="link-1">See comments</a> and respond to customers' comments.</p>
                             </div>
@@ -78,7 +83,7 @@ require_once("./templates/header.php") ?>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="font-weight-bold ml-1 font-size-30 ml-3">12.87%</div>
+                                    <div class="font-weight-bold ml-1 font-size-30 ml-3"><?= $user ?></div>
                                 </div>
                                 <p class="mb-0"><a class="link-1" href="#">See visits</a> that had a higher than expected
                                     bounce rate.</p>
@@ -97,7 +102,7 @@ require_once("./templates/header.php") ?>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="font-weight-bold ml-1 font-size-30 ml-3">12.87%</div>
+                                    <div class="font-weight-bold ml-1 font-size-30 ml-3"><?= $admin ?></div>
                                 </div>
                                 <p class="mb-0"><a class="link-1" href="#">See referring</a> domains that sent most visits
                                     last month.</p>
