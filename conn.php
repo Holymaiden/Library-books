@@ -34,7 +34,7 @@ function login($data)
         $name = $data['username'];
         $pass = $data['password'];
 
-        $sql = get_rows("SELECT * FROM users WHERE username='" . $name . "' AND pass='" . $pass . "'");
+        $sql = get_rows("SELECT * FROM users WHERE username='" . $name . "' OR email='" . $name . "' AND pass='" . $pass . "'");
         if ($sql > 0) {
                 session_start();
                 $data = query("SELECT * FROM users WHERE username='" . $name . "' AND pass='" . $pass . "'");
