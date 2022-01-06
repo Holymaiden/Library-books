@@ -1,11 +1,11 @@
 <?php
 session_start();
 if (isset($_SESSION['l'])) if ($_SESSION['l'] != 1) header('Location: index.php');
-$title = "User | Perpustakaan Hakim";
+$title = "Book Admin | Perpustakaan Hakim";
 require_once("./templates/header.php");
 require_once("./conn.php");
 
-$data = get_data("SELECT * FROM `users` WHERE `role`='2'");
+$data = get_data("SELECT * FROM `users` WHERE `role`='1'");
 ?>
 <!-- Content body -->
 <div class="content-body">
@@ -14,7 +14,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
 
         <div class="page-header d-md-flex justify-content-between">
             <div>
-                <h3>Users</h3>
+                <h3>Books</h3>
                 <nav aria-label="breadcrumb" class="d-flex align-items-start">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -23,16 +23,14 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                         <li class="breadcrumb-item">
                             <a href="#">Admin</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Users</li>
+                        <li class="breadcrumb-item active" aria-current="page">Books</li>
                     </ol>
                 </nav>
             </div>
             <div class="mt-2 mt-md-0">
-                <div class="dropdown ml-2">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#baruModal">
-                        Baru
-                    </button>
-                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#baruModal">
+                    Baru
+                </button>
             </div>
         </div>
 
@@ -42,16 +40,16 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="user-list" class="table table-striped table-bordered">
+                            <table id="book-list" class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Username</th>
-                                        <th>Role</th>
+                                        <th>Title</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
-
                             </table>
                         </div>
                     </div>
@@ -67,44 +65,49 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="baruModalTitle">User Baru</h5>
+                    <h5 class="modal-title" id="baruModalTitle">Buku Baru</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="ti-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formNew" action="" method="POST" class="needs-validation" novalidate>
+                    <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustomUsername">Username</label>
+                                <label for="validationCustomTitle">Title</label>
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                    </div>
-                                    <input name="username" type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+                                    <input name="title" type="text" class="form-control" id="validationCustomUTitle" placeholder="Title" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback">
-                                        Please choose a username.
+                                        Please choose a Title.
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom03">Password</label>
-                                <input name="password" type="password" class="form-control" id="validationCustom03" placeholder="Paasword" required>
+                                <label for="validationCustom04">Category</label>
+                                <select name="category" class="select2-example form-control" id="validationCustom04" required>
+                                    <option value="1">Fantasy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom03">Description</label>
+                                <textarea name="description" class="form-control" id="validationCustom03" placeholder="Description" required rows="3"></textarea>
                                 <div class="invalid-feedback">
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom04">Role</label>
-                                <select class="select2-example form-control" id="validationCustom04" required>
-                                    <option value="2">User</option>
-                                </select>
+                                <label for="validationCustom04">Image</label>
+                                <div class="custom-file">
+                                    <input name="image" type="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose Image</label>
+                                </div>
                             </div>
                         </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
@@ -117,50 +120,54 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
     </div>
     <!-- ./ Modal Baru -->
 
-    <!-- Modal Update -->
+    <!-- Modal Baru -->
     <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalTitle">User Update</h5>
+                    <h5 class="modal-title" id="baruModalTitle">Buku Baru</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="ti-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formUpdate" action="" method="POST" class="needs-validation" novalidate>
+                    <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
-                            <input type="hidden" name="id" id="formId">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustomUsername">Username</label>
+                                <label for="validationCustomTitle">Title</label>
                                 <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                    </div>
-                                    <input name="username" type="text" class="form-control" id="validationCustomUsername" placeholder="Username" aria-describedby="inputGroupPrepend" required>
+                                    <input name="title" type="text" class="form-control" id="validationCustomUTitle" placeholder="Title" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback">
-                                        Please choose a username.
+                                        Please choose a Title.
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom03">Password</label>
-                                <input name="password" type="password" class="form-control" id="validationCustom03" placeholder="Password" required>
+                                <label for="validationCustom04">Category</label>
+                                <select name="category" class="select2-example form-control" id="validationCustom04" required>
+                                    <option value="1">Fantasy</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-12 mb-3">
+                                <label for="validationCustom03">Description</label>
+                                <textarea name="description" class="form-control" id="validationCustom03" placeholder="Description" required rows="3"></textarea>
                                 <div class="invalid-feedback">
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom04">Role</label>
-                                <select class="select2-example form-control" id="validationCustom04" required>
-                                    <option value="2">User</option>
-                                </select>
+                                <label for="validationCustom04">Image</label>
+                                <div class="custom-file">
+                                    <input name="image" type="file" class="custom-file-input" id="customFile">
+                                    <label class="custom-file-label" for="customFile">Choose Image</label>
+                                </div>
                             </div>
                         </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
@@ -171,20 +178,20 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
             </div>
         </div>
     </div>
-    <!-- ./ Modal Update -->
+    <!-- ./ Modal Baru -->
 
     <?php require_once("./templates/footer.php") ?>
 
     <script type="text/javascript">
         $(document).ready(function() {
             var ids;
-            $('#user-list').DataTable({
+            $('#book-list').DataTable({
                 "lengthChange": false,
                 "processing": true,
                 "serverSide": true,
                 "order": [],
                 "ajax": {
-                    url: "users_get.php",
+                    url: "a-book_get.php",
                     type: "POST",
                     data: {
                         action: 'formNew'
@@ -195,10 +202,13 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                         data: 'id'
                     },
                     {
-                        data: 'username'
+                        data: 'title'
                     },
                     {
-                        data: 'role'
+                        data: 'name'
+                    },
+                    {
+                        data: 'description'
                     },
                     {
                         data: 'button'
@@ -212,17 +222,21 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                 e.preventDefault();
                 $.ajax({
                     type: "POST",
-                    url: 'users_new.php',
-                    data: $(this).serialize(),
+                    url: 'a-book_new.php',
+                    enctype: 'multipart/form-data',
+                    data: new FormData(this),
+                    processData: false,
+                    contentType: false,
+                    cache: false,
                 }).then(function(response) {
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
-                        swal("Good job!", "User Berhasil Ditambahkan!", "success");
-                        $('#user-list').DataTable().ajax.reload();
+                        swal("Good job!", "Book Berhasil Ditambahkan!", "success");
+                        $('#book-list').DataTable().ajax.reload();
                     } else if (jsonData.success == "2") {
-                        swal("Sorry!", "Username Sudah Ada!", "warning");
+                        swal("Sorry!", "Buku Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "User Gagal Ditambahkan", "error");
+                        swal("Sorry!", "Book Gagal Ditambahkan", "error");
                     }
                 });
             });
@@ -230,22 +244,38 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
             $('body').on('click', '.updateData', function() {
                 var id = $(this).data("id");
                 ids = id;
+                $.ajax({
+                    url: " " + id,
+                    type: "GET",
+                    dataType: "JSON",
+                    success: function(data) {
+
+                    },
+                    error: function() {
+                        toast("Tidak dapat menampilkan data", "error", 1500);
+                    }
+                });
+
             })
             $('#formUpdate').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
                     type: "POST",
-                    url: 'users_update.php',
-                    data: $(this).serialize() + '&id=' + ids,
+                    url: 'a-book_update.php',
+                    enctype: 'multipart/form-data',
+                    data: new FormData(this) + '&id=' + ids,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
                 }).then(function(response) {
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
-                        swal("Good job!", "User Berhasil Diubah!", "success");
-                        $('#user-list').DataTable().ajax.reload();
+                        swal("Good job!", "Book Berhasil Diubah!", "success");
+                        $('#book-list').DataTable().ajax.reload();
                     } else if (jsonData.success == "2") {
-                        swal("Sorry!", "Username Sudah Ada!", "warning");
+                        swal("Sorry!", "Buku Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "User Gagal Ditambahkan", "error");
+                        swal("Sorry!", "Book Gagal Ditambahkan", "error");
                     }
                 });
             });
@@ -263,10 +293,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='2'");
                             url: "delete.php",
                             data: {
                                 id: id,
-                                del: "users"
+                                del: 'books'
                             },
                             success: function(data) {
-                                $('#user-list').DataTable().ajax.reload();
+                                $('#book-list').DataTable().ajax.reload();
                                 toastr.success("Successful delete data!");
                             },
                             error: function(data) {

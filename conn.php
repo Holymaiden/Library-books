@@ -144,10 +144,10 @@ function update_user($data, $role)
         }
 }
 
-function delete_user($data)
+function deletes($data, $del)
 {
         global $connect;
-        $data = mysqli_query($connect, "DELETE FROM `users` WHERE id=" . $data . "");
+        $data = mysqli_query($connect, "DELETE FROM $del WHERE id=" . $data . "");
         if ($data) {
                 return json_encode(array('success' => 1));
         } else {
@@ -204,4 +204,120 @@ function show_admin()
                 "data" => $datas
         );
         echo json_encode($output);
+}
+
+function show_Books()
+{
+        global $connect;
+        $data = "SELECT `books`.*, `categorys`.`name` FROM `books` LEFT JOIN `categorys` ON `categorys`.`id`=`books`.`category_id`  ";
+        if (!empty($_POST["search"]["value"])) {
+                $data .= 'OR `books`.`title` LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'OR `books`.`description` LIKE "%' . $_POST["search"]["value"] . '%" ';
+                $data .= 'OR `categorys`.`name` LIKE "%' . $_POST["search"]["value"] . '%" ';
+        }
+        if (!empty($_POST["order"])) {
+                $data .= 'ORDER BY ' . $_POST['order']['0']['column'] . ' ' . $_POST['order']['0']['dir'] . ' ';
+        } else {
+                $data .= 'ORDER BY id DESC ';
+        }
+        if ($_POST["length"] != -1) {
+                $data .= 'LIMIT ' . $_POST['start'] . ', ' . $_POST['length'];
+        }
+        $h = mysqli_query($connect, $data);
+        $rows = mysqli_num_rows($h);
+        $l = mysqli_query($connect, "SELECT * FROM `books`");
+        $rowsTotal = mysqli_num_rows($l);
+
+        $datas = [];
+        $i = 1;
+        while ($v = mysqli_fetch_assoc($h)) {
+                $datas[] = [
+                        'id' => $i++,
+                        'title' => $v['title'],
+                        'name' => $v['name'],
+                        'description' => substr($v['description'], 0, 100),
+                        'button' => '<td class="text-right">
+                        <div class="dropdown">
+                            <a href="#" data-toggle="dropdown" class="btn btn-floating" aria-haspopup="true" aria-expanded="false">
+                                <i class="ti-more-alt"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="javascript:void(0)" class="dropdown-item updateData" data-toggle="modal" data-id="' . $v['id'] . '" title="Update" data-target="#updateModal">Edit</a>
+                                <a href="javascript:void(0)" data-toggle="tooltip"  data-id="' . $v['id'] . '" class="dropdown-item text-danger deleteData">Delete</a>
+                            </div>
+                        </div>
+                    </td>'
+                ];
+        }
+
+        $output = array(
+                "draw" => intval($_POST["draw"]),
+                "iTotalRecords" => $rows,
+                "iTotalDisplayRecords" => $rowsTotal,
+                "data" => $datas
+        );
+        echo json_encode($output);
+}
+
+function create_book($data, $file)
+{
+        global $connect;
+        $title = $data['title'];
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+        $category = $data['category'];
+        $description = $data['description'];
+
+        $filename = date('Y-m-d') . $file["name"];
+        $tempname =  $file["tmp_name"];
+        $folder = "image/" . $filename;
+
+
+        $sql = get_rows("SELECT * FROM `books` WHERE title='" . $title . "'");
+        if ($sql == 0) {
+                $data = mysqli_query($connect, "INSERT INTO `books` (`title`, `slug`, `category_id`, `description`, `image`) VALUES ('" . $title . "','" . $slug . "'," . $category . ", '" . $description . "','" . $filename . "')");
+
+                if (move_uploaded_file($tempname, $folder)) {
+                        return json_encode(array('success' => 1));
+                }
+                return json_encode(array('success' => 0));
+        } else {
+                return json_encode(array('success' => 2));
+        }
+}
+
+function update_book($data, $file)
+{
+        global $connect;
+        $title = $data['title'];
+        $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $title)));
+        $category = $data['category'];
+        $description = $data['description'];
+
+        $filename = $file["name"];
+        $tempname =  $file["tmp_name"];
+        $folder = "image/" . date('Y-m-d') . $filename;
+
+        $sql = get_rows("SELECT * FROM `books` WHERE title='" . $title . "'");
+        if ($sql == 0) {
+                $data = mysqli_query($connect, "UPDATE `books` SET `title`='" . $title . "', `slug`='" . $slug . "', `category_id`='" . $category . "', `description`='" . $description . "',`image`='" . $filename . "' WHERE id='" . $data['id'] . "'");
+
+                if (move_uploaded_file($tempname, $folder)) {
+                        return json_encode(array('success' => 1));
+                }
+
+                return json_encode(array('success' => 0));
+        } else {
+                return json_encode(array('success' => 2));
+        }
+}
+
+function delete_book($data)
+{
+        global $connect;
+        $data = mysqli_query($connect, "DELETE FROM `books` WHERE id=" . $data . "");
+        if ($data) {
+                return json_encode(array('success' => 1));
+        } else {
+                return json_encode(array('success' => 2));
+        }
 }

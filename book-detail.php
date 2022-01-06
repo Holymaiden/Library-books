@@ -35,7 +35,7 @@ $data = query("SELECT * FROM `books` WHERE slug='" . $_GET['v'] . "'");
                             <div class="col-md-6">
                                 <div class="slider-for">
                                     <div class="slick-slide-item" style="text-align: -webkit-center">
-                                        <img src="<?= $data['image']; ?>" class="img-fluid rounded" alt="image">
+                                        <img src="image/<?= $data['image']; ?>" class="img-fluid rounded" alt="image">
                                     </div>
                                 </div>
                             </div>

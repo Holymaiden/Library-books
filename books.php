@@ -54,7 +54,7 @@ $data = get_data("SELECT * FROM `books`");
                                                 <span class="badge bg-warning-bright text-warning">%30 Off</span>
                                             </div> -->
                                             <div class="my-3">
-                                                <a href="book-detail.php?v=<?= $v['slug'] ?>" title=<?= $v['title'] ?>> <img src=<?= $v['image'] ?> class="img-fluid rounded" alt="Vase">
+                                                <a href="book-detail.php?v=<?= $v['slug'] ?>" title=<?= $v['title'] ?>> <img src="image/<?= $v['image'] ?>" class="img-fluid rounded" alt="Vase">
                                                 </a>
                                             </div>
                                             <div class="text-center">

@@ -257,9 +257,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     if (result) {
                         $.ajax({
                             type: "POST",
-                            url: "users_delete.php",
+                            url: "delete.php",
                             data: {
-                                id: id
+                                id: id,
+                                del: 'users'
                             },
                             success: function(data) {
                                 $('#admin-list').DataTable().ajax.reload();
