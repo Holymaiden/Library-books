@@ -44,12 +44,21 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Title</th>
-                                        <th>Category</th>
-                                        <th>Description</th>
+                                        <th>Title Books</th>
+                                        <th>Page</th>
+                                        <th>Content</th>
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>title</th>
+                                        <th>page</th>
+                                        <th>Content</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -65,7 +74,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="baruModalTitle">Buku Baru</h5>
+                    <h5 class="modal-title" id="baruModalTitle">Chapter Baru</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="ti-close"></i>
                     </button>
@@ -74,37 +83,28 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustomTitle">Title</label>
-                                <div class="input-group">
-                                    <input name="title" type="text" class="form-control" id="validationCustomUTitle" placeholder="Title" aria-describedby="inputGroupPrepend" required>
-                                    <div class="invalid-feedback">
-                                        Please choose a Title.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-12 mb-3">
-                                <label for="validationCustom04">Category</label>
-                                <select name="category" class="select2-example form-control" id="validationCustom04" required>
-                                    <option value="1">Fantasy</option>
+                                <label for="bookCreate">Book</label>
+                                <select name="book" class="select2-example form-control" id="bookCreate" required>
+                                    <?php $data = get_data("SELECT id,title FROM books");
+                                    foreach ($data as $v) : ?>
+                                        <option value="<?= $v['id'] ?>"><?= $v['title'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom03">Description</label>
-                                <textarea name="description" class="form-control" id="validationCustom03" placeholder="Description" required rows="3"></textarea>
-                                <div class="invalid-feedback">
-                                </div>
+                                <label for="validationCustom04">Chapter</label>
+                                <select name="page" class="select2-example form-control" id="validationCustom04" required>
+                                    <option value="baru">Terbaru</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom04">Image</label>
-                                <div class="custom-file">
-                                    <input name="image" type="file" class="custom-file-input" id="customFile">
-                                    <label class="custom-file-label" for="customFile">Choose Image</label>
+                                <label for="validationCustom03">Content</label>
+                                <textarea name="content" class="form-control" id="validationCustom03" placeholder="Content" required rows="3"></textarea>
+                                <div class="invalid-feedback">
                                 </div>
                             </div>
                         </div>
@@ -185,16 +185,18 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
     <script type="text/javascript">
         $(document).ready(function() {
             var ids;
+            var sear;
             $('#book-list').DataTable({
                 "lengthChange": false,
                 "processing": true,
                 "serverSide": true,
                 "order": [],
                 "ajax": {
-                    url: "a-book_get.php",
+                    url: "chapter_get.php",
                     type: "POST",
                     data: {
-                        action: 'formNew'
+                        action: 'formNew',
+                        sear: sear
                     },
                     dataType: "json"
                 },
@@ -205,15 +207,36 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                         data: 'title'
                     },
                     {
-                        data: 'name'
+                        data: 'page'
                     },
                     {
-                        data: 'description'
+                        data: 'content'
                     },
                     {
                         data: 'button'
                     },
-                ]
+
+                ],
+                initComplete: function() {
+                    this.api().columns([1, 2]).every(function() {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo($(column.footer()).empty())
+                            .on('change', function() {
+                                console.log(sear);
+                                var value = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+                                sear = value;
+
+                                $('#book-list').DataTable().ajax.reload();
+                            });
+                        console.log(sear);
+                        column.data().unique().sort().each(function(d, j) {
+                            select.append('<option value="' + d + '">' + d + '</option>')
+                        });
+                    });
+                }
             });
             $('.select2-example').select2({
                 placeholder: 'User'
@@ -222,21 +245,17 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                 e.preventDefault();
                 $.ajax({
                     type: "POST",
-                    url: 'a-book_new.php',
-                    enctype: 'multipart/form-data',
-                    data: new FormData(this),
-                    processData: false,
-                    contentType: false,
-                    cache: false,
+                    url: 'chapter_new.php',
+                    data: $(this).serialize(),
                 }).then(function(response) {
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
-                        swal("Good job!", "Book Berhasil Ditambahkan!", "success");
+                        swal("Good job!", "Chapter Berhasil Ditambahkan!", "success");
                         $('#book-list').DataTable().ajax.reload();
                     } else if (jsonData.success == "2") {
-                        swal("Sorry!", "Buku Sudah Ada!", "warning");
+                        swal("Sorry!", "Chapter Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "Book Gagal Ditambahkan", "error");
+                        swal("Sorry!", "Chapter Gagal Ditambahkan", "error");
                     }
                 });
             });
@@ -281,7 +300,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     } else if (jsonData.success == "2") {
                         swal("Sorry!", "Buku Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "Book Gagal Ditambahkan", "error");
+                        swal("Sorry!", "Book Gagal Diubah", "error");
                     }
                 });
             });
@@ -299,14 +318,14 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             url: "delete.php",
                             data: {
                                 id: id,
-                                del: 'books'
+                                del: 'content'
                             },
                             success: function(data) {
                                 $('#book-list').DataTable().ajax.reload();
-                                swal("Good job!", "Book Berhasil Ditambahkan!", "success");
+                                swal("Good job!", "Book Berhasil Dihapus!", "success");
                             },
                             error: function(data) {
-                                swal("Sorry!", "Book Gagal Ditambahkan", "error");
+                                swal("Sorry!", "Book Gagal Dihapus", "error");
                             }
                         });
                     }
