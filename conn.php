@@ -40,6 +40,7 @@ function login($data)
                 $data = query("SELECT * FROM users WHERE username='" . $name . "' AND pass='" . $pass . "'");
                 $_SESSION['username'] = $data['username'];
                 $_SESSION['l'] = $data['role'];
+                $_SESSION['i'] = $data['id'];
                 return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));
@@ -396,4 +397,25 @@ function byIdPage($data)
 {
         $data = get_data("SELECT * FROM `content` WHERE `book_id`='" . $data['id'] . "'");
         echo json_encode($data);
+}
+
+function profile_setting()
+{
+        global $connect;
+        $mu = get_rows("SELECT * FROM `users` WHERE username='" . $_POST['username'] . "' AND email='" . $_POST['email'] . "'");
+        if ($mu == 0) {
+                mysqli_query($connect, "UPDATE `users` SET `username`='" . $_POST['username'] . "', `email`='" . $_POST['email'] . "' WHERE id=" . $_POST['id'] . "");
+                session_start();
+                $_SESSION['username'] = $_POST['username'];
+                return json_encode(array('success' => 1));
+        }
+
+        return json_encode(array('success' => 2));
+}
+
+function password_setting()
+{
+        global $connect;
+        mysqli_query($connect, "UPDATE `users` SET `pass`='" . $_POST['password1'] . "' WHERE id=" . $_POST['id'] . "");
+        return json_encode(array('success' => 1));
 }

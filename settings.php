@@ -3,7 +3,7 @@ $title = "Setting | Perpustakaan Hakim";
 require_once("./templates/header.php");
 require_once("./conn.php");
 
-$user = query("SELECT * FROM `users` WHERE username='" . $_SESSION['username'] . "'");
+$user = query("SELECT * FROM `users` WHERE id=" . $_SESSION['i'] . "");
 ?>
 
 <!-- Content body -->
@@ -49,29 +49,32 @@ $user = query("SELECT * FROM `users` WHERE username='" . $_SESSION['username'] .
                                                 <img width="100" class="rounded-pill" src="assets/media/image/user/women_avatar1.jpg" alt="...">
                                             </figure>
                                             <div>
-                                                <p>Roxana Roussell</p>
+                                                <p><?= $user['username'] ?></p>
                                                 <button class="btn btn-outline-light mr-2">Change Avatar</button>
                                                 <button class="btn btn-outline-danger">Remove Avatar</button>
                                                 <p class="small text-muted mt-3">For best results, use an image at least
                                                     256px by 256px in either .jpg or .png format</p>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Username</label>
-                                                    <input type="text" class="form-control" value="<?= $user['username'] ?>">
-                                                </div>
+                                        <form id="user_profile" method="POST">
+                                            <div class="row">
+                                                <input name="id" type="text" hidden class="form-control" value="<?= $user['id'] ?>">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Username</label>
+                                                        <input name="username" type="text" class="form-control" value="<?= $user['username'] ?>">
+                                                    </div>
 
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label>Email</label>
-                                                    <input type="text" class="form-control" value="<?= $user['email'] ?>">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Email</label>
+                                                        <input name="email" type="text" class="form-control" value="<?= $user['email'] ?>">
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <button class="btn btn-primary">Save</button>
+                                            <button type="submit" value="save" class="btn btn-primary">Save</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -79,20 +82,21 @@ $user = query("SELECT * FROM `users` WHERE username='" . $_SESSION['username'] .
                                 <div class="card">
                                     <div class="card-body">
                                         <h6 class="card-title">Password</h6>
-                                        <form>
+                                        <form id="user_password" method="POST">
                                             <div class="row">
                                                 <div class="col-md-6">
+                                                    <input name="id" type="text" hidden class="form-control" value="<?= $user['id'] ?>">
                                                     <div class="form-group">
                                                         <label>Old Password</label>
-                                                        <input type="password" class="form-control">
+                                                        <input name="password" type="password" class="form-control">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>New Password</label>
-                                                        <input type="password" class="form-control">
+                                                        <input name="password1" type="password" class="form-control">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>New Password Repeat</label>
-                                                        <input type="password" class="form-control">
+                                                        <input name="password2" type="password" class="form-control">
                                                     </div>
                                                 </div>
                                             </div>
@@ -112,3 +116,40 @@ $user = query("SELECT * FROM `users` WHERE username='" . $_SESSION['username'] .
 
     <?php
     require_once("./templates/footer.php") ?>
+
+    <script type="text/javascript">
+        $('#user_profile').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: 'settings_req.php',
+                data: $(this).serialize(),
+            }).then(function(response) {
+                var jsonData = JSON.parse(response);
+                if (jsonData.success == "1") {
+                    swal("Good job!", "Data Berhasil Diubah!", "success");
+                } else if (jsonData.success == "2") {
+                    swal("Sorry!", "Data Sudah Ada!", "warning");
+                } else {
+                    swal("Sorry!", "Data Gagal diubah", "error");
+                }
+            });
+        });
+        $('#user_password').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: 'settings_req.php',
+                data: $(this).serialize(),
+            }).then(function(response) {
+                var jsonData = JSON.parse(response);
+                if (jsonData.success == "1") {
+                    swal("Good job!", "Data Berhasil Diubah!", "success");
+                } else if (jsonData.success == "2") {
+                    swal("Sorry!", "Data Sudah Ada!", "warning");
+                } else {
+                    swal("Sorry!", "Data Gagal diubah", "error");
+                }
+            });
+        });
+    </script>
