@@ -391,3 +391,9 @@ function create_Chapter($data)
                 return json_encode(array('success' => 2));
         }
 }
+
+function byIdPage($data)
+{
+        $data = get_data("SELECT * FROM `content` WHERE `book_id`='" . $data['id'] . "'");
+        echo json_encode($data);
+}

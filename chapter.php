@@ -125,7 +125,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="baruModalTitle">Buku Update</h5>
+                    <h5 class="modal-title" id="baruModalTitle">Chapter Update</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i class="ti-close"></i>
                     </button>
@@ -134,37 +134,28 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="titleUpdate">Title</label>
-                                <div class="input-group">
-                                    <input name="title" type="text" class="form-control" id="titleUpdate" placeholder="Title" aria-describedby="inputGroupPrepend" required>
-                                    <div class="invalid-feedback">
-                                        Please choose a Title.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-12 mb-3">
-                                <label for="categoryUpdate">Category</label>
-                                <select name="category" class="select2-example form-control" id="categoryUpdate" required>
-                                    <option value="1">Fantasy</option>
+                                <label for="bookUpdate">Book</label>
+                                <select name="book" class="select2-example form-control" id="bookUpdate" required>
+                                    <?php $data = get_data("SELECT id,title FROM books");
+                                    foreach ($data as $v) : ?>
+                                        <option value="<?= $v['id'] ?>"><?= $v['title'] ?></option>
+                                    <?php endforeach ?>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="descriptionUpdate">Description</label>
-                                <textarea name="description" class="form-control" id="descriptionUpdate" placeholder="Description" required rows="3"></textarea>
-                                <div class="invalid-feedback">
-                                </div>
+                                <label for="chapterUpdate">Chapter</label>
+                                <select name="page" class="select2-example form-control" id="chapterUpdate" required>
+                                    <option value=""></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom04">Image</label>
-                                <div class="custom-file">
-                                    <input name="image" type="file" class="custom-file-input" id="customFileUpdate">
-                                    <label class="custom-file-label" for="customFileUpdate">Choose Image</label>
+                                <label for="contentUpdate">Content</label>
+                                <textarea name="content" class="form-control" id="contentUpdate" placeholder="Content" required rows="3"></textarea>
+                                <div class="invalid-feedback">
                                 </div>
                             </div>
                         </div>
@@ -183,9 +174,12 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
     <?php require_once("./templates/footer.php") ?>
 
     <script type="text/javascript">
+        new FroalaEditor("#validationCustom03");
+        new FroalaEditor("#contentUpdate");
         $(document).ready(function() {
             var ids;
             var sear;
+            var book;
             $('#book-list').DataTable({
                 "lengthChange": false,
                 "processing": true,
@@ -264,7 +258,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                 var id = $(this).data("id");
                 ids = id;
                 $.ajax({
-                    url: "a-book_get.php",
+                    url: "chapter_get.php",
                     type: "POST",
                     data: {
                         action: 'byOne',
@@ -272,16 +266,38 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     },
                     dataType: "JSON",
                     success: function(data) {
-                        $('#titleUpdate').val(data.title);
-                        $('#descriptionUpdate').val(data.description);
-                        $('#categoryUpdate').val(data.category_id);
+                        $('#bookUpdate').val(data.book_id).change();
+                        $('#chapterUpdate').val(data.page).change();
+                        $('#contentUpdate').val(data.content).change();
                     },
                     error: function() {
-                        swal("Sorry!", "Book Gagal ditampilkan", "error");
+                        swal("Sorry!", "Chapter Gagal ditampilkan", "error");
                     }
                 });
-
             })
+
+            $('#bookUpdate').on('change', (event) => {
+                book = event.target.value;
+                $.ajax({
+                    url: "chapter_get_page.php",
+                    type: "POST",
+                    data: {
+                        id: book
+                    },
+                    dataType: "JSON",
+                    success: function(data) {
+                        console.log(data);
+                        $("#chapterUpdate").html('');
+                        $.each(data, function() {
+                            $("#chapterUpdate").append('<option value="' + this.id + '">' + this.page + '</option>')
+                        })
+                    },
+                    error: function(data) {
+                        swal("Sorry!", "Page Gagal ditampilkan", "error");
+                    }
+                });
+            });
+
             $('#formUpdate').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
