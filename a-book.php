@@ -134,9 +134,9 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustomTitle">Title</label>
+                                <label for="titleUpdate">Title</label>
                                 <div class="input-group">
-                                    <input name="title" type="text" class="form-control" id="validationCustomUTitle" placeholder="Title" aria-describedby="inputGroupPrepend" required>
+                                    <input name="title" type="text" class="form-control" id="titleUpdate" placeholder="Title" aria-describedby="inputGroupPrepend" required>
                                     <div class="invalid-feedback">
                                         Please choose a Title.
                                     </div>
@@ -145,16 +145,16 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom04">Category</label>
-                                <select name="category" class="select2-example form-control" id="validationCustom04" required>
+                                <label for="categoryUpdate">Category</label>
+                                <select name="category" class="select2-example form-control" id="categoryUpdate" required>
                                     <option value="1">Fantasy</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="col-md-12 mb-3">
-                                <label for="validationCustom03">Description</label>
-                                <textarea name="description" class="form-control" id="validationCustom03" placeholder="Description" required rows="3"></textarea>
+                                <label for="descriptionUpdate">Description</label>
+                                <textarea name="description" class="form-control" id="descriptionUpdate" placeholder="Description" required rows="3"></textarea>
                                 <div class="invalid-feedback">
                                 </div>
                             </div>
@@ -163,8 +163,8 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             <div class="col-md-12 mb-3">
                                 <label for="validationCustom04">Image</label>
                                 <div class="custom-file">
-                                    <input name="image" type="file" class="custom-file-input" id="customFile">
-                                    <label class="custom-file-label" for="customFile">Choose Image</label>
+                                    <input name="image" type="file" class="custom-file-input" id="customFileUpdate">
+                                    <label class="custom-file-label" for="customFileUpdate">Choose Image</label>
                                 </div>
                             </div>
                         </div>
@@ -245,14 +245,20 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                 var id = $(this).data("id");
                 ids = id;
                 $.ajax({
-                    url: " " + id,
-                    type: "GET",
+                    url: "a-book_get.php",
+                    type: "POST",
+                    data: {
+                        action: 'byOne',
+                        id: ids
+                    },
                     dataType: "JSON",
                     success: function(data) {
-
+                        $('#titleUpdate').val(data.title);
+                        $('#descriptionUpdate').val(data.description);
+                        $('#categoryUpdate').val(data.category_id);
                     },
                     error: function() {
-                        toast("Tidak dapat menampilkan data", "error", 1500);
+                        swal("Sorry!", "Book Gagal ditampilkan", "error");
                     }
                 });
 
@@ -297,10 +303,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             },
                             success: function(data) {
                                 $('#book-list').DataTable().ajax.reload();
-                                toastr.success("Successful delete data!");
+                                swal("Good job!", "Book Berhasil Ditambahkan!", "success");
                             },
                             error: function(data) {
-                                toastr.error("Failed delete data!");
+                                swal("Sorry!", "Book Gagal Ditambahkan", "error");
                             }
                         });
                     }

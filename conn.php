@@ -259,6 +259,12 @@ function show_Books()
         echo json_encode($output);
 }
 
+function byId($data, $table)
+{
+        $data = query("SELECT * FROM `books` WHERE `id`=" . $data['id'] . "");
+        echo json_encode($data);
+}
+
 function create_book($data, $file)
 {
         global $connect;
@@ -306,17 +312,6 @@ function update_book($data, $file)
                 }
 
                 return json_encode(array('success' => 0));
-        } else {
-                return json_encode(array('success' => 2));
-        }
-}
-
-function delete_book($data)
-{
-        global $connect;
-        $data = mysqli_query($connect, "DELETE FROM `books` WHERE id=" . $data . "");
-        if ($data) {
-                return json_encode(array('success' => 1));
         } else {
                 return json_encode(array('success' => 2));
         }
