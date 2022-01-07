@@ -50,7 +50,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                                         <th class="text-right">Action</th>
                                     </tr>
                                 </thead>
-                                <tfoot>
+                                <!-- <tfoot>
                                     <tr>
                                         <th>ID</th>
                                         <th>title</th>
@@ -58,7 +58,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                                         <th>Content</th>
                                         <th>Action</th>
                                     </tr>
-                                </tfoot>
+                                </tfoot> -->
                             </table>
                         </div>
                     </div>

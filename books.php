@@ -72,7 +72,7 @@ $data = get_data("SELECT * FROM `books`");
                             <?php endforeach ?>
                         </div>
 
-                        <nav aria-label="..." class="mb-4">
+                        <!-- <nav aria-label="..." class="mb-4">
                             <ul class="pagination pagination-rounded justify-content-center">
                                 <li class="page-item disabled">
                                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">
@@ -90,7 +90,7 @@ $data = get_data("SELECT * FROM `books`");
                                     </a>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> -->
 
                     </div>
                 </div>

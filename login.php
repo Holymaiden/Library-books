@@ -35,7 +35,7 @@ if (isset($_SESSION['username']) && isset($_SESSION['l'])) {
 
         <!-- logo -->
         <div id="logo">
-            <img src="assets/media/image/dark-logo.png" alt="image">
+            <img src="assets/media/image/logo.png" alt="image">
         </div>
         <!-- ./ logo -->
 
