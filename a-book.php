@@ -131,8 +131,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    <form id="formUpdate" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
+                            <input name="id" type="hidden" class="form-control" id="idUpdate" placeholder="Title" aria-describedby="inputGroupPrepend" required>
+
                             <div class="col-md-12 mb-3">
                                 <label for="titleUpdate">Title</label>
                                 <div class="input-group">
@@ -253,6 +255,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     },
                     dataType: "JSON",
                     success: function(data) {
+                        $('#idUpdate').val(data.id);
                         $('#titleUpdate').val(data.title);
                         $('#descriptionUpdate').val(data.description);
                         $('#categoryUpdate').val(data.category_id);
@@ -269,7 +272,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     type: "POST",
                     url: 'a-book_update.php',
                     enctype: 'multipart/form-data',
-                    data: new FormData(this) + '&id=' + ids,
+                    data: new FormData(this),
                     processData: false,
                     contentType: false,
                     cache: false,

@@ -309,7 +309,7 @@ function update_book($data, $file)
 
         $sql = get_rows("SELECT * FROM `books` WHERE title='" . $title . "'");
         if ($sql == 0) {
-                $data = mysqli_query($connect, "UPDATE `books` SET `title`='" . $title . "', `slug`='" . $slug . "', `category_id`='" . $category . "', `description`='" . $description . "',`image`='" . $filename . "' WHERE id='" . $data['id'] . "'");
+                $data = mysqli_query($connect, "UPDATE `books` SET `title`='" . $title . "', `slug`='" . $slug . "', `category_id`=" . $category . ", `description`='" . $description . "',`image`='" . $filename . "' WHERE id=" . $data['id'] . "");
 
                 if (move_uploaded_file($tempname, $folder)) {
                         return json_encode(array('success' => 1));
@@ -394,6 +394,18 @@ function create_Chapter($data)
         } else {
                 return json_encode(array('success' => 2));
         }
+}
+
+function update_Chapter($data)
+{
+        global $connect;
+        $book = $data['book'];
+        $page = $data['page'];
+        $content = $data['content'];
+
+
+        $data = mysqli_query($connect, "UPDATE `content` SET `book_id`=" . $book . ", `page`=" . $page . ", `content`='" . $content . "' WHERE id=" . $data['id'] . "");
+        return json_encode(array('success' => 1));
 }
 
 function byIdPage($data)

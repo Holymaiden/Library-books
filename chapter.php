@@ -14,7 +14,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
 
         <div class="page-header d-md-flex justify-content-between">
             <div>
-                <h3>Books</h3>
+                <h3>Chapters</h3>
                 <nav aria-label="breadcrumb" class="d-flex align-items-start">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
@@ -23,7 +23,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                         <li class="breadcrumb-item">
                             <a href="#">Admin</a>
                         </li>
-                        <li class="breadcrumb-item active" aria-current="page">Books</li>
+                        <li class="breadcrumb-item active" aria-current="page">Chapters</li>
                     </ol>
                 </nav>
             </div>
@@ -131,8 +131,9 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formNew" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
+                    <form id="formUpdate" action="" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
                         <div class="form-row">
+                            <input name="id" type="hidden" class="form-control" id="idUpdate" placeholder="Title" aria-describedby="inputGroupPrepend" required>
                             <div class="col-md-12 mb-3">
                                 <label for="bookUpdate">Book</label>
                                 <select name="book" class="select2-example form-control" id="bookUpdate" required>
@@ -266,6 +267,7 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                     },
                     dataType: "JSON",
                     success: function(data) {
+                        $('#idUpdate').val(data.id);
                         $('#bookUpdate').val(data.book_id).change();
                         $('#chapterUpdate').val(data.page).change();
                         $('#contentUpdate').val(data.content).change();
@@ -301,22 +303,18 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
             $('#formUpdate').submit(function(e) {
                 e.preventDefault();
                 $.ajax({
+                    url: "chapter_update.php",
                     type: "POST",
-                    url: 'a-book_update.php',
-                    enctype: 'multipart/form-data',
-                    data: new FormData(this) + '&id=' + ids,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
+                    data: $(this).serialize(),
                 }).then(function(response) {
                     var jsonData = JSON.parse(response);
                     if (jsonData.success == "1") {
-                        swal("Good job!", "Book Berhasil Diubah!", "success");
+                        swal("Good job!", "Chapter Berhasil Diubah!", "success");
                         $('#book-list').DataTable().ajax.reload();
                     } else if (jsonData.success == "2") {
-                        swal("Sorry!", "Buku Sudah Ada!", "warning");
+                        swal("Sorry!", "Chapter Sudah Ada!", "warning");
                     } else {
-                        swal("Sorry!", "Book Gagal Diubah", "error");
+                        swal("Sorry!", "Chapter Gagal Diubah", "error");
                     }
                 });
             });
@@ -338,10 +336,10 @@ $data = get_data("SELECT * FROM `users` WHERE `role`='1'");
                             },
                             success: function(data) {
                                 $('#book-list').DataTable().ajax.reload();
-                                swal("Good job!", "Book Berhasil Dihapus!", "success");
+                                swal("Good job!", "Chapter Berhasil Dihapus!", "success");
                             },
                             error: function(data) {
-                                swal("Sorry!", "Book Gagal Dihapus", "error");
+                                swal("Sorry!", "Chapter Gagal Dihapus", "error");
                             }
                         });
                     }
